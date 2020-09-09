@@ -1,9 +1,11 @@
 import React from "react";
 import styled from 'styled-components';
-import { Layout } from 'antd';
+import SlotBookContainer from './SlotBookContainer'
+import { Layout, Typography } from 'antd';
 import { Pagination } from 'antd';
 import { List, Avatar } from 'antd';
 
+const { Title, Paragraph, Text } = Typography;
 const { Header, Footer, Sider, Content } = Layout;
 
 const HeaderContainer = styled.div`
@@ -22,6 +24,13 @@ const ListItemContainer = styled.div`
 const CalendarContainer = styled.div`
 `;
 
+const AvatarContainer = styled.div`
+`;
+
+const UserDataContainer = styled.div`
+    padding:3vh
+`;
+
 const FooterContainer = styled.div`
     background-color:#243235;
     // position: relative;
@@ -30,23 +39,18 @@ const FooterContainer = styled.div`
     color:#616F72
 `;
 
-const data = [
-    {
-      title: 'Ant Design Title 1',
-    },
-    {
-      title: 'Ant Design Title 2',
-    },
-    {
-      title: 'Ant Design Title 3',
-    },
-    {
-      title: 'Ant Design Title 4',
-    },
-  ];
-
 export default class HomePage extends React.Component {
+
+    constructor(props){
+        super(props)
+        this.state={
+
+        }
+    }
+
+
     render() {
+        const { usersList } = this.props;
         return (
         <Layout>
             <Header>
@@ -57,24 +61,34 @@ export default class HomePage extends React.Component {
             <Content style={{padding:'3vh',display:'flex',justifyContent:'space-between'}}>
                 <UsersListContainer>
                     <ListItemContainer>
-                        <List
-                            itemLayout="horizontal"
-                            dataSource={data}
-                            renderItem={item => (
-                            <List.Item>
-                                <List.Item.Meta
-                                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                title={<a href="https://ant.design">{item.title}</a>}
-                                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                                />
-                            </List.Item>
-                            )}
-                        />
+                        {
+                            usersList && usersList.data !== 0 && (
+                            <List>
+                                {
+                                    usersList.data.map((user,index)=>(
+                                    <List.Item style={{display:'flex',justifyContent:'space-between'}} key={index}>
+                                        <AvatarContainer>
+                                            <Avatar src={user.avatar} shape="circle" />
+                                        </AvatarContainer>
+                                        <UserDataContainer>
+                                            <Typography>
+                                                <Title>{user.first_name + " " + user.last_name}</Title>
+                                                <Paragraph>
+                                                    {user.email}
+                                                </Paragraph>
+                                            </Typography>
+                                        </UserDataContainer>
+                                    </List.Item>
+                                    ))
+                                }
+                            </List>
+                            )
+                        }
                     </ListItemContainer>
                     <Pagination defaultCurrent={1} total={50} />
                 </UsersListContainer>
                 <CalendarContainer>
-                    calendar
+                    <SlotBookContainer />
                 </CalendarContainer>
             </Content>
             <Footer>

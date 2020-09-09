@@ -24,7 +24,7 @@ export default class HomePageContainer extends React.Component {
         console.log('result',this.state.usersList)
         return (
             <div>
-                <HomePage />
+                <HomePage usersList={this.state.usersList}/>
             </div>
         );
     }
