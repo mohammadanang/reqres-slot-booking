@@ -42,7 +42,13 @@ export default class SlotBookContainer extends React.Component {
                 initialDate = { moment().format() }
                 maxTimeslots = {1}
                 disabledTimeslots = {disabledTimeslot}
-                // onSelectTimeslot={console.log('res')}
+                onSelectTimeslot = { (timeslots, lastSelected) => {
+                    console.log('All Timeslots:');
+                    console.log(timeslots);
+        
+                    console.log('Last selected timeslot:');
+                    console.log(lastSelected);
+                  } }
                 timeslots = {timeslot}
             />
         );

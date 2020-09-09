@@ -12,9 +12,6 @@ const { Title, Paragraph, Text } = Typography;
 const { Header, Content } = Layout;
 
 const HeaderContainer = styled.div`
-    // background-color:#243235;
-    // //position: fixed;
-    // padding:3vh;
     color:#FFFFFF
 `;
 
@@ -41,9 +38,22 @@ export default class HomePage extends React.Component {
     constructor(props){
         super(props)
         this.state={
-
+            user:null
         }
+        this.handleChange = this.handleChange.bind(this)
     }
+
+    handleChange = value => {
+        console.log('value',value)
+        this.props.handlePageChange(value)
+    };
+
+    handleUser = user => {
+        console.log('value',user)
+        this.setState({
+            user:user
+        })
+    };
 
 
     render() {
@@ -65,7 +75,7 @@ export default class HomePage extends React.Component {
                                     usersList.data.map((user,index)=>(
                                     <List.Item style={{display:'flex',justifyContent:'space-between'}} key={index}>
                                         <AvatarContainer>
-                                            <Avatar src={user.avatar} shape="circle" />
+                                            <Avatar src={user.avatar} shape="circle" size="large" />
                                         </AvatarContainer>
                                         <UserDataContainer>
                                             <Typography>
@@ -75,7 +85,7 @@ export default class HomePage extends React.Component {
                                                 </Paragraph>
                                             </Typography>
                                         </UserDataContainer>
-                                        <Button shape="circle" icon={<RightOutlined />} style={{cursor:"pointer"}}/>
+                                        <Button shape="circle" icon={<RightOutlined />} style={{cursor:"pointer"}} onClick={this.handleUser.bind(this,user)}/>
                                     </List.Item>
                                     ))
                                 }
@@ -83,7 +93,7 @@ export default class HomePage extends React.Component {
                             )
                         }
                     </ListItemContainer>
-                    <Pagination defaultCurrent={1} total={50} />
+                    {/* <Pagination defaultCurrent={1} total={50} onChange={this.handleChange}/> */}
                 </UsersListContainer>
                 <CalendarContainer>
                     <SlotBookContainer />
