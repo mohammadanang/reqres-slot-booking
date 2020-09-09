@@ -2,13 +2,11 @@ import React from "react";
 import styled from 'styled-components';
 import SlotBookContainer from './SlotBookContainer'
 import { Layout, Typography, Button } from 'antd';
-import { Pagination } from 'antd';
 import { List, Avatar } from 'antd';
 import { RightOutlined} from '@ant-design/icons';
-import * as FeatherIcon from 'react-feather';
 import 'antd/dist/antd.css';
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 const { Header, Content } = Layout;
 
 const HeaderContainer = styled.div`
