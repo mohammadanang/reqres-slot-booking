@@ -1,27 +1,24 @@
-const slotBook = require("../models/slotBook.model.js");
+const db = require("../models");
+const SlotBook = db.slotBook;
 
 exports.create = (req, res) => {
-    if (!req.body) {
-        res.status(400).send({
-          message: "Content can not be empty!"
-        });
-      }
-    
-      const SlotBook = new slotBook({
-        id:req.body.id,
-        email: req.body.email,
-        name: req.body.name,
-        mobile_no: req.body.mobile_no,
-        votes: req.body.votes,
-        level: req.body.level,
+  const slotBook = new SlotBook({
+    username: req.body.username,
+    userEmail: req.body.userEmail,
+    slotTime: req.body.slotTime,
+    booked: req.body.booked ? req.body.booked : false
+  });
+
+  // Save Tutorial in the database
+  slotBook
+    .save(slotBook)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while booking the slot."
       });
-    
-      SlotBook.create(slotBook, (err, data) => {
-        if (err)
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while creating the candidate."
-          });
-        else res.send(data);
-      });
+    });
 };

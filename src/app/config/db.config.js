@@ -1,6 +1,3 @@
 module.exports = {
-    HOST: "localhost",
-    USER: "root",
-    PASSWORD: "$Sattyam96",
-    DB: "slotBookDB"
-  };
+  url: "mongodb://localhost:27017/slotBookDB"
+};

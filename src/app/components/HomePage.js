@@ -1,27 +1,32 @@
 import React from "react";
 import styled from 'styled-components';
 import SlotBookContainer from './SlotBookContainer'
-import { Layout, Typography } from 'antd';
+import { Layout, Typography, Button } from 'antd';
 import { Pagination } from 'antd';
 import { List, Avatar } from 'antd';
+import { RightOutlined} from '@ant-design/icons';
+import * as FeatherIcon from 'react-feather';
+import 'antd/dist/antd.css';
 
 const { Title, Paragraph, Text } = Typography;
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 
 const HeaderContainer = styled.div`
-    background-color:#243235;
-    //position: fixed;
-    padding:3vh;
+    // background-color:#243235;
+    // //position: fixed;
+    // padding:3vh;
     color:#FFFFFF
 `;
 
 const UsersListContainer = styled.div`
+    padding:5vh
 `;
 
 const ListItemContainer = styled.div`
 `;
 
 const CalendarContainer = styled.div`
+    padding:5vh
 `;
 
 const AvatarContainer = styled.div`
@@ -29,14 +34,6 @@ const AvatarContainer = styled.div`
 
 const UserDataContainer = styled.div`
     padding:3vh
-`;
-
-const FooterContainer = styled.div`
-    background-color:#243235;
-    // position: relative;
-    // bottom: 0;
-    padding:3vh;
-    color:#616F72
 `;
 
 export default class HomePage extends React.Component {
@@ -78,6 +75,7 @@ export default class HomePage extends React.Component {
                                                 </Paragraph>
                                             </Typography>
                                         </UserDataContainer>
+                                        <Button shape="circle" icon={<RightOutlined />} style={{cursor:"pointer"}}/>
                                     </List.Item>
                                     ))
                                 }
@@ -91,9 +89,6 @@ export default class HomePage extends React.Component {
                     <SlotBookContainer />
                 </CalendarContainer>
             </Content>
-            <Footer>
-                <FooterContainer />
-            </Footer>
         </Layout>
         );
     }
