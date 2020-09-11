@@ -5,5 +5,7 @@ module.exports = app => {
   
     router.post("/slotBook", slotBook.create);
 
+    router.get("/slotBook", slotBook.findAll);
+
     app.use('/api', router);
 }

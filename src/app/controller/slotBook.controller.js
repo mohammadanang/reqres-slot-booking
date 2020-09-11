@@ -23,3 +23,14 @@ exports.create = (req, res) => {
       });
     });
 };
+
+exports.findAll = (req, res) => {
+  SlotBook.find((err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving booking."
+        });
+      else res.send(data);
+    });
+};

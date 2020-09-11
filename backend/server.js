@@ -1,19 +1,16 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const db = require("./app/models");
+const db = require("../src/app/models");
 const app = express();
+const path = require('path')
 
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
+//const connection = "mongodb+srv://SattyamJain:<password>@cluster0.xo3id.mongodb.net/<slotBookDB>?retryWrites=true&w=majority";
 
 app.use(cors());
 
-// parse requests of content-type - application/json
 app.use(bodyParser.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
 db.mongoose
@@ -30,11 +27,12 @@ db.mongoose
   });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
-});
+app.use(express.static(path.join(__dirname, '../build')))
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build'))
+})
 
-require("./app/routes/slotBook.routes")(app);
+require("../src/app/routes/slotBook.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

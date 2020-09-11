@@ -1,7 +1,9 @@
 import React from "react";
 import { Calendar, momentLocalizer, Views} from 'react-big-calendar';
+import { notification  } from 'antd';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import axios from "axios";
 
 const localizer = momentLocalizer(moment);
 
@@ -26,44 +28,71 @@ function EventAgenda({ event }) {
     )
 }
 
-var myEventsList = [
-    {
-        'title': 'Meeting',
-        'start': new Date(2020, 8, 12, 10, 0, 0, 0),
-        'end': new Date(2020, 8, 12, 11, 0, 0, 0),
-        desc: 'Pre-meeting meeting, to prepare for the meeting'
-    },
-    {
-        'title': 'Lunch',
-        'start':new Date(2020, 8, 12, 14, 0, 0, 0),
-        'end': new Date(2020, 8, 12, 15, 0, 0, 0),
-        desc: 'Power lunch'
-    }
-]
+const openNotification = () => {
+    notification.open({
+        message: 'Already Booked',
+        description:
+        'Slot is Already Booked',
+        onClick: () => {
+            console.log('Slot is Already Booked');
+        },
+    });
+};
+
+const openErrorNotification = () => {
+    notification.open({
+        message: 'Time Exceeded Error',
+        description:
+        'Slot will be of one hour',
+        onClick: () => {
+            console.log('Slot will be of one hour');
+        },
+    });
+};
 
 export default class SlotBookContainer extends React.Component {
     constructor(props){
         super(props)
         this.state = {
             name: 'React',
+            selectedDates:null
           };
           this.onSlotChange = this.onSlotChange.bind(this)
     }
 
+    async componentDidMount(){
+        const result = await axios.get('http://localhost:8080/api/slotBook')
+
+        this.setState({
+            selectedDates:result.data
+        })
+    }
+
     onSlotChange(slotInfo) {
-        console.log('slotInfo',slotInfo)
-        var startDate = moment(slotInfo.start.toLocaleString()).format("dddd, MMMM Do YYYY, h:mm:ss a");
-        var endDate = moment(slotInfo.end.toLocaleString()).format("dddd, MMMM Do YYYY, h:mm:ss a");
-        console.log('startTimeStartDate',startDate); //shows the start time chosen
-        console.log('endTimEndDate',endDate); //shows the end time chosen
-        this.props.handleSlotBooked(startDate,endDate)
+        const diff = moment(slotInfo.end.toLocaleString()).diff(moment(slotInfo.start.toLocaleString()))
+        if(diff === 3600000){
+            var startDate = moment(slotInfo.start.toLocaleString()).format()
+            var endDate = moment(slotInfo.end.toLocaleString()).format()
+            this.props.handleSlotBooked(startDate,endDate)
+        }else{
+            openErrorNotification()
+        }
     }
 
     onEventClick(event) {
-        console.log('event',event) //Shows the event details provided while booking
+        openNotification()
     }
 
     render() {
+        var myEventsList=[]
+        this.state.selectedDates && this.state.selectedDates.length !== 0 && this.state.selectedDates.map(dateObj=>{
+            myEventsList.push({
+                'title':'Booked',
+                'start':new Date(dateObj.startDate),
+                'end':new Date(dateObj.endDate)
+            })
+        })
+
         return (
             <Calendar
                 localizer={localizer}

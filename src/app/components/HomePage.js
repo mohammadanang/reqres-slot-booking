@@ -1,7 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
 import SlotBookContainer from './SlotBookContainer'
-import { Layout, Typography, Button } from 'antd';
+import { Layout, Typography, Button,notification  } from 'antd';
 import { List, Avatar } from 'antd';
 import axios from 'axios';
 import { RightOutlined} from '@ant-design/icons';
@@ -32,6 +32,39 @@ const UserDataContainer = styled.div`
     padding:3vh
 `;
 
+const openNotification = () => {
+    notification.open({
+        message: 'Alert',
+        description:
+        'User have to be selected',
+        onClick: () => {
+            console.log('User have to be selected');
+        },
+    });
+};
+
+const openUserNotification = () => {
+    notification.open({
+        message: 'Success',
+        description:
+        'User selected successfully',
+        onClick: () => {
+            console.log('User selected successfully');
+        },
+    });
+};
+
+const openSuccessNotification = () => {
+    notification.open({
+        message: 'Success',
+        description:
+        'Slot is Booked successfully',
+        onClick: () => {
+            console.log('Slot is Booked successfully');
+        },
+    });
+};
+
 export default class HomePage extends React.Component {
 
     constructor(props){
@@ -44,28 +77,33 @@ export default class HomePage extends React.Component {
     }
 
     handleChange = value => {
-        console.log('value',value)
         this.props.handlePageChange(value)
     };
 
     handleUser = user => {
-        console.log('value',user)
         this.setState({
             user:user
         })
+        openUserNotification()
     };
 
     async handleSlotBooked(startDate,endDate){
-        console.log('state',this.state)
-        const formValues={
-            startDate:startDate,
-            endDate:endDate,
-            fullName:this.state.user.first_name+' '+this.state.user.last_name,
-            email:this.state.user.email,
-            booked:true
+        if(this.state.user !== null) {
+            const formValues={
+                startDate:startDate,
+                endDate:endDate,
+                fullName:this.state.user.first_name+' '+this.state.user.last_name,
+                email:this.state.user.email,
+                booked:true
+            }
+            await axios.post('http://localhost:8080/api/slotBook',formValues)
+            openSuccessNotification()
+            setTimeout(()=>{
+                window.location.reload()
+            },1000)
+        }else{
+            openNotification()
         }
-        console.log('formValues',formValues)
-        await axios.post('http://localhost:8080/api/slotBook',formValues).then(res=>console.log('res')).catch(err=>console.log('err',err))
     }
 
 
