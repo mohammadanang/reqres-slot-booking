@@ -1,9 +1,10 @@
 module.exports = mongoose => {
   var schema = mongoose.Schema(
     {
-      username: String,
-      userEmail: String,
-      slotTime: String,
+      fullName: String,
+      email: String,
+      startDate: String,
+      endDate:String,
       booked: Boolean
     },
     { timestamps: true }

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SlotBookContainer from './SlotBookContainer'
 import { Layout, Typography, Button } from 'antd';
 import { List, Avatar } from 'antd';
+import axios from 'axios';
 import { RightOutlined} from '@ant-design/icons';
 import 'antd/dist/antd.css';
 
@@ -14,14 +15,14 @@ const HeaderContainer = styled.div`
 `;
 
 const UsersListContainer = styled.div`
-    padding:5vh
+    padding:2vh
 `;
 
 const ListItemContainer = styled.div`
 `;
 
 const CalendarContainer = styled.div`
-    padding:5vh
+    width:60%;
 `;
 
 const AvatarContainer = styled.div`
@@ -39,6 +40,7 @@ export default class HomePage extends React.Component {
             user:null
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleSlotBooked = this.handleSlotBooked.bind(this)
     }
 
     handleChange = value => {
@@ -52,6 +54,19 @@ export default class HomePage extends React.Component {
             user:user
         })
     };
+
+    async handleSlotBooked(startDate,endDate){
+        console.log('state',this.state)
+        const formValues={
+            startDate:startDate,
+            endDate:endDate,
+            fullName:this.state.user.first_name+' '+this.state.user.last_name,
+            email:this.state.user.email,
+            booked:true
+        }
+        console.log('formValues',formValues)
+        await axios.post('http://localhost:8080/api/slotBook',formValues).then(res=>console.log('res')).catch(err=>console.log('err',err))
+    }
 
 
     render() {
@@ -94,7 +109,7 @@ export default class HomePage extends React.Component {
                     {/* <Pagination defaultCurrent={1} total={50} onChange={this.handleChange}/> */}
                 </UsersListContainer>
                 <CalendarContainer>
-                    <SlotBookContainer />
+                    <SlotBookContainer handleSlotBooked={this.handleSlotBooked} />
                 </CalendarContainer>
             </Content>
         </Layout>

@@ -3,9 +3,10 @@ const SlotBook = db.slotBook;
 
 exports.create = (req, res) => {
   const slotBook = new SlotBook({
-    username: req.body.username,
-    userEmail: req.body.userEmail,
-    slotTime: req.body.slotTime,
+    fullName: req.body.fullName,
+    email: req.body.email,
+    startDate: req.body.startDate,
+    endDate:req.body.endDate,
     booked: req.body.booked ? req.body.booked : false
   });
 
