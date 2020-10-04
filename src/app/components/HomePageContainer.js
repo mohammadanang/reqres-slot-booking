@@ -45,7 +45,7 @@ export default class HomePageContainer extends React.Component {
         return (
             <div>
                 {
-                    this.state.usersList.length != 0 && (
+                    this.state.usersList.length !== 0 && (
                         <HomePage usersList={this.state.usersList} currentPage={this.state.currentPage} total={this.state.total} handlePageChange={this.handlePageChange}/>
                     )
                 }
