@@ -1,7 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
 import SlotBookContainer from './SlotBookContainer'
-import { Layout, Typography, Button,notification  } from 'antd';
+import { Layout, Typography, Button, notification, Pagination } from 'antd';
 import { List, Avatar } from 'antd';
 import axios from 'axios';
 import { RightOutlined} from '@ant-design/icons';
@@ -108,7 +108,8 @@ export default class HomePage extends React.Component {
 
 
     render() {
-        const { usersList } = this.props;
+        const { usersList, currentPage, total } = this.props;
+        
         return (
         <Layout>
             <Header>
@@ -144,7 +145,8 @@ export default class HomePage extends React.Component {
                             )
                         }
                     </ListItemContainer>
-                    {/* <Pagination defaultCurrent={1} total={50} onChange={this.handleChange}/> */}
+                    
+                    <Pagination defaultCurrent={currentPage} total={total} onChange={this.handleChange}/>
                 </UsersListContainer>
                 <CalendarContainer>
                     <SlotBookContainer handleSlotBooked={this.handleSlotBooked} />

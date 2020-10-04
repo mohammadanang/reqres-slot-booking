@@ -6,8 +6,9 @@ export default class HomePageContainer extends React.Component {
     constructor(props){
         super(props)
         this.state={
-            usersList:null,
-            pageNum:1
+            usersList: [],
+            currentPage: 1,
+            total: 1
         }
     }
 
@@ -15,20 +16,39 @@ export default class HomePageContainer extends React.Component {
         const result = await axios.get(`https://reqres.in/api/users?page=1`);
 
         this.setState({
-            usersList:result.data
+            usersList: result.data,
+            currentPage: result.data.page,
+            total: result.data.total
         })
-      }
+    }
 
-      handlePageChange = (value) =>{
-          this.setState({
-              pageNum:value
-          })
-      }
+    handleUser = async (page) => {
+        const result = await axios.get(`https://reqres.in/api/users?page=${page}`);
+
+        return result.data;
+    }
+
+    handlePageChange = async (value) => {
+        this.setState({
+            usersList: []
+        })
+
+        const user = await this.handleUser(value)
+
+        this.setState({
+            currentPage: value,
+            usersList: user
+        })
+    }
 
     render() {
         return (
             <div>
-                <HomePage usersList={this.state.usersList} handlePageChange={this.handlePageChange}/>
+                {
+                    this.state.usersList.length != 0 && (
+                        <HomePage usersList={this.state.usersList} currentPage={this.state.currentPage} total={this.state.total} handlePageChange={this.handlePageChange}/>
+                    )
+                }
             </div>
         );
     }
